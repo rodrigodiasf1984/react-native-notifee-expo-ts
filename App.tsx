@@ -30,6 +30,23 @@ export default function App() {
       }
     })
   }
+  const updateNotification = async () => {
+    await notifee.requestPermission()
+
+    const channelId = await createChannel()
+
+    await notifee.displayNotification({
+      id: '123',
+      title: 'Olá, <strong>Notifee</strong>🤩!',
+      body: 'Hello World!',
+      android: {
+        channelId: channelId
+      },
+      ios: {
+        sound: 'default'
+      }
+    })
+  }
 
   useEffect(() => {
     return notifee.onForegroundEvent(({ type, detail }) => {
@@ -67,6 +84,13 @@ export default function App() {
           style={styles.button}
         >
           <Text style={styles.buttonText}>Display notification</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={updateNotification}
+          style={styles.button}
+        >
+          <Text style={styles.buttonText}>Update notification</Text>
         </TouchableOpacity>
       </View>
     </View>
