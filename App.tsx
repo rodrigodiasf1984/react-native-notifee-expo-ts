@@ -82,6 +82,13 @@ export default function App() {
     )
   }
 
+  const listScheduledNotifications = async () => {
+    notifee.getTriggerNotificationIds().then((ids) => {
+      console.log('✅ ~  listScheduledNotifications ids:', ids)
+      console.log(ids)
+    })
+  }
+
   useEffect(() => {
     return notifee.onForegroundEvent(({ type, detail }) => {
       switch (type) {
@@ -139,6 +146,13 @@ export default function App() {
           style={styles.button}
         >
           <Text style={styles.buttonText}>Schedule notification</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={listScheduledNotifications}
+          style={styles.button}
+        >
+          <Text style={styles.buttonText}>List scheduled notifications</Text>
         </TouchableOpacity>
       </View>
     </View>
