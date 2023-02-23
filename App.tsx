@@ -1,7 +1,12 @@
 import { useEffect } from 'react'
-import { Button, Text, TouchableOpacity, View } from 'react-native'
+import { Text, TouchableOpacity, View } from 'react-native'
 import { styles } from './styles'
-import notifee, { AndroidImportance, EventType } from '@notifee/react-native'
+import notifee, {
+  AndroidImportance,
+  EventType,
+  TimestampTrigger,
+  TriggerType
+} from '@notifee/react-native'
 
 export default function App() {
   const createChannel = async () => {
@@ -50,6 +55,31 @@ export default function App() {
 
   const cancelNotification = async () => {
     await notifee.cancelNotification('123')
+  }
+
+  const scheduleNotification = async () => {
+    const date = new Date(Date.now())
+    date.setMinutes(date.getMinutes() + 1)
+
+    const trigger: TimestampTrigger = {
+      type: TriggerType.TIMESTAMP,
+      timestamp: date.getTime()
+    }
+    const channelId = await createChannel()
+
+    await notifee.createTriggerNotification(
+      {
+        title: 'Scheduled notification!⏰ ',
+        body: 'This notification was scheduled to display',
+        android: {
+          channelId: channelId
+        },
+        ios: {
+          sound: 'default'
+        }
+      },
+      trigger
+    )
   }
 
   useEffect(() => {
@@ -102,6 +132,13 @@ export default function App() {
           style={styles.button}
         >
           <Text style={styles.buttonText}>Cancel notification</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={scheduleNotification}
+          style={styles.button}
+        >
+          <Text style={styles.buttonText}>Schedule notification</Text>
         </TouchableOpacity>
       </View>
     </View>
