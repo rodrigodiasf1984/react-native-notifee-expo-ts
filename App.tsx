@@ -48,6 +48,10 @@ export default function App() {
     })
   }
 
+  const cancelNotification = async () => {
+    await notifee.cancelNotification('123')
+  }
+
   useEffect(() => {
     return notifee.onForegroundEvent(({ type, detail }) => {
       switch (type) {
@@ -91,6 +95,13 @@ export default function App() {
           style={styles.button}
         >
           <Text style={styles.buttonText}>Update notification</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={cancelNotification}
+          style={styles.button}
+        >
+          <Text style={styles.buttonText}>Cancel notification</Text>
         </TouchableOpacity>
       </View>
     </View>
